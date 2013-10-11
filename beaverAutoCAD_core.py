@@ -94,7 +94,9 @@ def count_blocks_excel(filename, savingPath, uselayer0):
 		acad.prompt("Creating a table of blocks count")		
 		layer0counter = 0
 		for block in acad.iter_objects('block'):
-		''' This if statement checks if the layer is Layer0. Some people workflow includes leaving "garbage" in layer 0, and we don't want it to count these objects.'''
+		    ''' This if statement checks if the layer is Layer0. 
+		    Some people workflow includes leaving "garbage" in layer 0, 
+		    and we don't want it to count these objects.'''
 			if (uselayer0 == "no") & (unicodedata.normalize('NFKD', block.Layer).encode('ascii','ignore') == "0"):
             	# print "block was on layer 0"
 				layer0counter += 1
@@ -134,7 +136,9 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
 		acad.prompt("Creating a table of blocks count")		
 		layer0counter = 0
 		for block in acad.iter_objects('block'):
-		''' This if statement checks if the layer is Layer0. Some people workflow includes leaving "garbage" in layer 0, and we don't want it to count these objects.'''
+		    ''' This if statement checks if the layer is Layer0. 
+		    Some people workflow includes leaving "garbage" in layer 0, 
+		    and we don't want it to count these objects.'''
 			if (uselayer0 == "no") & (unicodedata.normalize('NFKD', block.Layer).encode('ascii','ignore') == "0"):
 				# print "block was on layer 0"
 				layer0counter += 1
