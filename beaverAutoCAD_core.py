@@ -134,7 +134,7 @@ def directory_settings(self):
 
 def set_file_name(self, filename):
     # This method checks the existance of an XLS file, and allows the user to overwrite it,
-    #or use a different file.
+    # or use a different file.
     tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
     print tableFilename
     if os.path.isfile(tableFilename):
