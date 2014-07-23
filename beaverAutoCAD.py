@@ -39,3 +39,20 @@ except ImportError:
     import beaverAutoCAD_cli
 
     beaverAutoCAD_cli.PyAPP()
+    import gtk
+
+    if gtk.pygtk_version < (2, 4, 0):
+        print "Please install an updated version of pygtk.\nCurrently using pygtk version " + str(
+            gtk.pygtk_version[0]) + "." + str(gtk.pygtk_version[1]) + "." + str(gtk.pygtk_version[2])
+        print "Using textual interface"
+        import beaverAutoCAD_cli
+
+        beaverAutoCAD_cli.PyAPP()
+    import beaverAutoCAD_gui
+
+    beaverAutoCAD_gui.PyAPP()
+except ImportError:
+print "Using textual interface"
+import beaverAutoCAD_cli
+
+beaverAutoCAD_cli.PyAPP()
