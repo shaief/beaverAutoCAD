@@ -286,38 +286,3 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
         table.writerow([block_layer[i], block_name_list[i], total_blocks[i], ""])
     # Save table in xls
     table.save(tableFilename, 'xls')
-
-
-def directory_settings(self):
-    dir_name = self.dir_button.get_current_folder()
-    print dir_name
-    os.chdir(currentDirectory)
-    with open("settings.txt", "w") as text_file:
-        text_file.write(dir_name)
-    os.chdir(dir_name)
-    return filename
-
-
-def set_file_name(self, filename):
-    '''
-    This method checks the existence of an XLS file, and allows the user to overwrite it, or use a different file.
-    '''
-    tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
-    print tableFilename
-    if os.path.isfile(tableFilename):
-        fileoverwrite = 'n'
-        while (fileoverwrite != 'y' or fileoverwrite != 'Y' or (os.path.isfile(tableFilename))):
-            fileoverwrite = raw_input("File " + tableFilename + " exist. Overwrite (y/n)?")
-            if fileoverwrite == 'y' or fileoverwrite == 'Y':
-                break
-            elif fileoverwrite == 'n' or fileoverwrite == 'N':
-                tableFilename = raw_input("Enter table name: ")
-                tableFilename = tableFilename + ".xls"
-                if os.path.isfile(tableFilename):
-                    continue
-                else:
-                    break
-            else:
-                print "Goodbye!"
-                sys.exit(0)
-    return tableFilename
