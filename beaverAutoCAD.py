@@ -51,8 +51,3 @@ except ImportError:
     import beaverAutoCAD_gui
 
     beaverAutoCAD_gui.PyAPP()
-except ImportError:
-print "Using textual interface"
-import beaverAutoCAD_cli
-
-beaverAutoCAD_cli.PyAPP()
