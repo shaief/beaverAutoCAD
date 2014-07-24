@@ -102,8 +102,9 @@ class PyAPP():
         return filename
 
     def set_file_name(self, filename):
-        # This method checks the existance of an XLS file, and allows the user to overwrite it,
-        # or use a different file.
+        '''
+        This method checks the existence of an XLS file, and allows the user to overwrite it, or use a different file.
+        '''
         tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
         print tableFilename
         if os.path.isfile(tableFilename):
@@ -183,7 +184,9 @@ class PyAPP():
         self.window.add(self.vbox)
 
     def connect_signals(self):
-        # This method connects signals to relevant actions
+        '''
+        This method connects signals to relevant actions
+        '''
         self.dir_button.set_current_folder(homeDir)
         self.filename = self.entry.set_text('temp' + today_date)
         self.button_exit.connect("clicked", self.callback_exit)
@@ -192,7 +195,9 @@ class PyAPP():
         self.window.connect("destroy", gtk.main_quit)
 
     def callback_lines_lengths(self, widget, callback_data=None):
-        # This method connects the gui to the relevant function in the app's core
+        '''
+        This method connects the gui to the relevant function in the app's core
+        '''
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_lines_" + self.directory_settings()
         self.set_file_name(filename)
@@ -247,8 +252,9 @@ class PyAPP():
         return filename
 
     def set_file_name(self, filename):
-        # This method checks the existance of an XLS file, and allows the user to overwrite it,
-        #or use a different file.
+        '''
+        This method checks the existance of an XLS file, and allows the user to overwrite it, or use a different file.
+        '''
         tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
         print tableFilename
         if os.path.isfile(tableFilename):
@@ -330,7 +336,9 @@ class PyAPP():
         self.window.add(self.vbox)
 
     def connect_signals(self):
-        # This method connects signals to relevant actions
+        '''
+        This method connects signals to relevant actions
+        '''
         self.dir_button.set_current_folder(homeDir)
         self.filename = self.entry.set_text('temp' + today_date)
         self.button_exit.connect("clicked", self.callback_exit)
@@ -340,7 +348,9 @@ class PyAPP():
         self.window.connect("destroy", gtk.main_quit)
 
     def callback_lines_lengths(self, widget, callback_data=None):
-        # This method connects the gui to the relevant function in the app's core
+        '''
+        This method connects the gui to the relevant function in the app's core
+        '''
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_lines_" + self.directory_settings()
         self.set_file_name(filename)
@@ -349,7 +359,9 @@ class PyAPP():
         print "Done."
 
     def callback_blocks_count(self, widget, callback_data=None):
-        # This method connects the gui to the relevant function in the app's core
+        '''
+        This method connects the gui to the relevant function in the app's core
+        '''
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_blocks_" + self.directory_settings()
         uselayer0 = self.use0.get_active_text()
@@ -357,7 +369,9 @@ class PyAPP():
         print "Done."
 
     def callback_blocks_count_per_layer(self, widget, callback_data=None):
-        # This method connects the gui to the relevant function in the app's core
+        '''
+        This method connects the gui to the relevant function in the app's core
+        '''
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_blocks_per_layer" + self.directory_settings()
         uselayer0 = self.use0.get_active_text()

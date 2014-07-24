@@ -29,22 +29,14 @@ import unicodedata
 from pyautocad import Autocad, utils
 from pyautocad.contrib.tables import Table
 
-__author__ = "Shai Efrati"
-__copyright__ = "Copyright 2013, Shai Efrati for NADRASH Ltd."
-__credits__ = ["Shai Efrati"]
-__license__ = "GPL"
-__version__ = "0.0.1"
-__version__ = "0.0.2"
-__maintainer__ = "Shai Efrati"
-__email__ = "shaief@gmail.com"
-__status__ = "Production"
-
 
 def line_lengths_excel(filename, savingPath, draw_units):
-    # This function iterate over all the layers in the opened DWG and write sum of line lengths of each layer into one MS-Excel sheet.
-    # Parameters needed:
-    # 1. Name of an MS-Excel file (doesn't have to exist)
-    # 2. Units of the drwaing
+    '''
+    This function iterate over all the layers in the opened DWG and write sum of line lengths of each layer into one MS-Excel sheet.
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    2. Units of the drwaing
+    '''
     os.chdir(savingPath)
     acad.prompt("Creating a table of line lengths")
     tableFilename = filename + '.xls'
@@ -77,9 +69,11 @@ def line_lengths_excel(filename, savingPath, draw_units):
 
 
 def count_blocks_excel(filename, savingPath, uselayer0):
-    # This function iterate over all the layers in the opened DWG and summing up all the blocks in the file into one MS-Excel sheet.
-    # Parameters needed:
-    # 1. Name of an MS-Excel file (doesn't have to exist)
+    '''
+    This function iterate over all the layers in the opened DWG and summing up all the blocks in the file into one MS-Excel sheet.
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    '''
     os.chdir(savingPath)
     tableFilename = filename + '.xls'
     table = Table()
@@ -127,8 +121,10 @@ def directory_settings(self):
 
 
 def set_file_name(self, filename):
-    # This method checks the existance of an XLS file, and allows the user to overwrite it,
-    # or use a different file.
+    '''
+    This method checks the existance of an XLS file, and allows the user to overwrite it,
+    or use a different file.
+    '''
     tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
     print tableFilename
     if os.path.isfile(tableFilename):
@@ -160,10 +156,13 @@ today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year
 
 
 def line_lengths_excel(filename, savingPath, draw_units):
-    # This function iterates over all the layers in the opened DWG and write sum of line lengths of each layer into one MS-Excel sheet.
-    # Parameters needed:
-    # 1. Name of an MS-Excel file (doesn't have to exist)
-    # 2. Units of the drwaing
+    '''
+    This function iterates over all the layers in the opened DWG and write sum of line lengths of each layer
+    into one MS-Excel sheet.
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    2. Units of the drwaing
+    '''
     os.chdir(savingPath)
     acad.prompt("Creating a table of line lengths")
     tableFilename = filename + '.xls'
@@ -196,10 +195,13 @@ def line_lengths_excel(filename, savingPath, draw_units):
 
 
 def count_blocks_excel(filename, savingPath, uselayer0):
-    # This function iterates over all the layers in the opened DWG and summing up all the blocks in the file into one MS-Excel sheet.
-    # Parameters needed:
-    # 1. Name of an MS-Excel file (doesn't have to exist)
-    # 2. Should it count objects in Layer 0?
+    '''
+    This function iterates over all the layers in the opened DWG and summing up all the blocks in the file
+    into one MS-Excel sheet.
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    2. Should it count objects in Layer 0?
+    '''
     os.chdir(savingPath)
     tableFilename = filename + '.xls'
     table = Table()
@@ -222,7 +224,6 @@ def count_blocks_excel(filename, savingPath, uselayer0):
             block_list.append(block.name)
             total_blocks.append(1)
 
-
     print block_list
     print total_blocks
     if (uselayer0 == "no"):
@@ -239,10 +240,13 @@ def count_blocks_excel(filename, savingPath, uselayer0):
 
 
 def count_blocks_per_layer(filename, savingPath, uselayer0):
-    # This function iterates over all the layers in the opened DWG and summing up all the blocks in each layer into one MS-Excel sheet.
+    '''
+    # This function iterates over all the layers in the opened DWG and summing up all the blocks in each layer
+    into one MS-Excel sheet.
     # Parameters needed:
     # 1. Name of an MS-Excel file (doesn't have to exist)
     # 2. Should it count objects in Layer 0?
+    '''
     os.chdir(savingPath)
     tableFilename = filename + '.xls'
     table = Table()
@@ -268,7 +272,6 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
             block_name_list.append(block.name)
             block_layer.append(block.Layer)
             total_blocks.append(1)
-
 
     print block_list
     print total_blocks
@@ -296,8 +299,9 @@ def directory_settings(self):
 
 
 def set_file_name(self, filename):
-    # This method checks the existance of an XLS file, and allows the user to overwrite it,
-    # or use a different file.
+    '''
+    This method checks the existence of an XLS file, and allows the user to overwrite it, or use a different file.
+    '''
     tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
     print tableFilename
     if os.path.isfile(tableFilename):
