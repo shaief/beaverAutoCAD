@@ -40,42 +40,6 @@ today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour,
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
 
 
-def directory_settings(self):
-    dir_name = self.dir_button.get_current_folder()
-    print dir_name
-    os.chdir(currentDirectory)
-    with open("settings.txt", "w") as text_file:
-        text_file.write(dir_name)
-    os.chdir(dir_name)
-    return filename
-
-
-def set_file_name(self, filename):
-    '''
-    This method checks the existance of an XLS file, and allows the user to overwrite it,
-    or use a different file.
-    '''
-    tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
-    print tableFilename
-    if os.path.isfile(tableFilename):
-        fileoverwrite = 'n'
-        while (fileoverwrite != 'y' or fileoverwrite != 'Y' or (os.path.isfile(tableFilename))):
-            fileoverwrite = raw_input("File " + tableFilename + " exist. Overwrite (y/n)?")
-            if fileoverwrite == 'y' or fileoverwrite == 'Y':
-                break
-            elif fileoverwrite == 'n' or fileoverwrite == 'N':
-                tableFilename = raw_input("Enter table name: ")
-                tableFilename = tableFilename + ".xls"
-                if os.path.isfile(tableFilename):
-                    continue
-                else:
-                    break
-            else:
-                print "Goodbye!"
-                sys.exit(0)
-    return tableFilename
-
-
 def line_lengths_excel(filename, savingPath, draw_units):
     '''
     This function iterates over all the layers in the opened DWG and write sum of line lengths of each layer
@@ -106,11 +70,11 @@ def line_lengths_excel(filename, savingPath, draw_units):
     print total_length
     acad.prompt("Saving file AAC_lines_" + filename + ".xls at " + savingPath)
     # Add headlines to table
-    table.writerow(["NADRASH LTD.", "Lines Lengths", "Created:", today_date_designed])
-    table.writerow(["Layer", "Length [" + units + "]", "Length [m]", ""])
+    table.writerow(["NADRASH LTD.", "Lines Lengths", "Created:", today_date_designed, acad.ActiveDocument.Name])
+    table.writerow(["Layer", "Length [" + units + "]", "Length [m]", "", ""])
     # Add data to table
     for i in range(len(layers)):
-        table.writerow([layers[i], total_length[i], total_length[i] / scale, ""])
+        table.writerow([layers[i], total_length[i], total_length[i] / scale, "", ""])
     # Save table in xls
     table.save(tableFilename, 'xls')
 
@@ -151,11 +115,11 @@ def count_blocks_excel(filename, savingPath, uselayer0):
         print str(layer0counter) + " blocks counted and ignored on layer 0"
     acad.prompt("Saving file AAC_blocks_" + filename + ".xls at " + savingPath)
     # Add headlines to table
-    table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed])
-    table.writerow(["Block", "Amount", "", ""])
+    table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed, acad.ActiveDocument.Name])
+    table.writerow(["Block", "Amount", "", "", ""])
     # Add data to table
     for i in range(len(block_list)):
-        table.writerow([block_list[i], total_blocks[i], "", ""])
+        table.writerow([block_list[i], total_blocks[i], "", "", ""])
     # Save table in xls
     table.save(tableFilename, 'xls')
 
@@ -200,10 +164,10 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
         print str(layer0counter) + " blocks counted and ignored on layer 0"
     acad.prompt("Saving file AAC_blocks_per_layer" + filename + ".xls at " + savingPath)
     # Add headlines to table
-    table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed])
-    table.writerow(["Layer", "Block Name", "Amount", ""])
+    table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed, acad.ActiveDocument.Name])
+    table.writerow(["Layer", "Block Name", "Amount", "", ""])
     # Add data to table
     for i in range(len(block_list)):
-        table.writerow([block_layer[i], block_name_list[i], total_blocks[i], ""])
+        table.writerow([block_layer[i], block_name_list[i], total_blocks[i], "", ""])
     # Save table in xls
     table.save(tableFilename, 'xls')
