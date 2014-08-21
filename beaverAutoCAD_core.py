@@ -79,13 +79,14 @@ def line_lengths_excel(filename, savingPath, draw_units):
     table.save(tableFilename, 'xls')
 
 
-def count_blocks_excel(filename, savingPath, uselayer0):
+def count_blocks_excel(filename, savingPath, uselayer0, layers_contain):
     '''
     This function iterates over all the layers in the opened DWG and summing up all the blocks in the file
     into one MS-Excel sheet.
     Parameters needed:
     1. Name of an MS-Excel file (doesn't have to exist)
     2. Should it count objects in Layer 0?
+    3. Should it count objects only in specific layers?
     '''
     os.chdir(savingPath)
     tableFilename = filename + '.xls'
@@ -102,12 +103,14 @@ def count_blocks_excel(filename, savingPath, uselayer0):
             # print "block was on layer 0"
             layer0counter += 1
             continue
-        if block.name in block_list:
-            i = block_list.index(block.name)
-            total_blocks[i] += 1
-        else:
-            block_list.append(block.name)
-            total_blocks.append(1)
+        if layers_contain in block.Layer:
+            # print block.Layer
+            if block.name in block_list:
+                i = block_list.index(block.name)
+                total_blocks[i] += 1
+            else:
+                block_list.append(block.name)
+                total_blocks.append(1)
 
     print block_list
     print total_blocks
@@ -116,7 +119,7 @@ def count_blocks_excel(filename, savingPath, uselayer0):
     acad.prompt("Saving file AAC_blocks_" + filename + ".xls at " + savingPath)
     # Add headlines to table
     table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed, acad.ActiveDocument.Name])
-    table.writerow(["Block", "Amount", "", "", ""])
+    table.writerow(["Block", "Amount", "", "", "Blocks counted only in layers contain: {}".format(layers_contain)])
     # Add data to table
     for i in range(len(block_list)):
         table.writerow([block_list[i], total_blocks[i], "", "", ""])
@@ -124,13 +127,14 @@ def count_blocks_excel(filename, savingPath, uselayer0):
     table.save(tableFilename, 'xls')
 
 
-def count_blocks_per_layer(filename, savingPath, uselayer0):
+def count_blocks_per_layer(filename, savingPath, uselayer0, layers_contain):
     '''
-    # This function iterates over all the layers in the opened DWG and summing up all the blocks in each layer
+    This function iterates over all the layers in the opened DWG and summing up all the blocks in each layer
     into one MS-Excel sheet.
-    # Parameters needed:
-    # 1. Name of an MS-Excel file (doesn't have to exist)
-    # 2. Should it count objects in Layer 0?
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    2. Should it count objects in Layer 0?
+    3. Should it count objects only in specific layers?
     '''
     os.chdir(savingPath)
     tableFilename = filename + '.xls'
@@ -149,14 +153,16 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
             # print "block was on layer 0"
             layer0counter += 1
             continue
-        if block.Layer + " " + block.name in block_list:
-            i = block_list.index(block.Layer + " " + block.name)
-            total_blocks[i] += 1
-        else:
-            block_list.append(block.Layer + " " + block.name)
-            block_name_list.append(block.name)
-            block_layer.append(block.Layer)
-            total_blocks.append(1)
+        if layers_contain in block.Layer:
+            # print block.Layer
+            if block.Layer + " " + block.name in block_list:
+                i = block_list.index(block.Layer + " " + block.name)
+                total_blocks[i] += 1
+            else:
+                block_list.append(block.Layer + " " + block.name)
+                block_name_list.append(block.name)
+                block_layer.append(block.Layer)
+                total_blocks.append(1)
 
     print block_list
     print total_blocks
@@ -165,7 +171,8 @@ def count_blocks_per_layer(filename, savingPath, uselayer0):
     acad.prompt("Saving file AAC_blocks_per_layer" + filename + ".xls at " + savingPath)
     # Add headlines to table
     table.writerow(["NADRASH LTD.", "Blocks Count", "Created:", today_date_designed, acad.ActiveDocument.Name])
-    table.writerow(["Layer", "Block Name", "Amount", "", ""])
+    table.writerow(["Layer", "Block Name", "Amount", "",
+                    "Blocks counted only in layers contain: {}".format(layers_contain)])
     # Add data to table
     for i in range(len(block_list)):
         table.writerow([block_layer[i], block_name_list[i], total_blocks[i], "", ""])
