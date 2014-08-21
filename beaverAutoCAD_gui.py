@@ -134,6 +134,12 @@ class PyAPP():
             "In cases where you don't want to count blocks in layer 0, choose no. Otherwise, choose yes")
         self.hbox_2.pack_start(self.use0)
 
+        self.hbox_6 = gtk.HBox(spacing=10)
+        self.label = gtk.Label("Layers contain: ")
+        self.hbox_6.pack_start(self.label)
+        self.layers_contain_box = gtk.Entry()
+        self.hbox_6.pack_start(self.layers_contain_box)
+
         self.unitsLabel = gtk.Label("DWG units: ")
         self.hbox_2.pack_start(self.unitsLabel)
         self.units = gtk.combo_box_new_text()
@@ -169,6 +175,7 @@ class PyAPP():
 
         self.vbox.pack_start(self.hbox_0)
         self.vbox.pack_start(self.hbox_1)
+        self.vbox.pack_start(self.hbox_6)
         self.vbox.pack_start(self.hbox_2)
         self.vbox.pack_start(self.hbox_3)
         self.vbox.pack_start(self.hbox_4)
@@ -182,7 +189,8 @@ class PyAPP():
         '''
         self.dir_button.set_current_folder(homeDir)
         # self.filename = self.entry.set_text('temp' + today_date)
-        self.filename = self.entry.set_text('{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4], today_date))
+        self.filename = self.entry.set_text('{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4],
+                                                           today_date))
         self.button_exit.connect("clicked", self.callback_exit)
         self.bLineLength.connect('clicked', self.callback_lines_lengths)
         self.bBlocksCount.connect('clicked', self.callback_blocks_count)
@@ -197,27 +205,38 @@ class PyAPP():
         filename = "AAC_lines_" + self.directory_settings()
         self.set_file_name(filename)
         draw_units = self.units.get_active_text()
-        beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)  # calls the function from the core
+        # calls the function from the core:
+        beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)
         print "Done."
 
     def callback_blocks_count(self, widget, callback_data=None):
         '''
         This method connects the gui to the relevant function in the app's core
         '''
-        savingPath = self.dir_button.get_current_folder()
-        filename = "AAC_blocks_" + self.directory_settings()
-        uselayer0 = self.use0.get_active_text()
-        beaverAutoCAD_core.count_blocks_excel(filename, savingPath, uselayer0)  # calls the function from the core
+        # calls the function from the core:
+        # beaverAutoCAD_core.count_blocks_excel(filename, savingPath, uselayer0, self.layers_contain)
+        self.layers_contain = self.layers_contain_box.get_text()
+        print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
+        beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_" + self.directory_settings(),
+                                              savingPath=self.dir_button.get_current_folder(),
+                                              uselayer0=self.use0.get_active_text(),
+                                              layers_contain=self.layers_contain)
         print "Done."
 
     def callback_blocks_count_per_layer(self, widget, callback_data=None):
         '''
         This method connects the gui to the relevant function in the app's core
         '''
+        self.layers_contain = self.layers_contain_box.get_text()
+        print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_blocks_per_layer" + self.directory_settings()
         uselayer0 = self.use0.get_active_text()
-        beaverAutoCAD_core.count_blocks_per_layer(filename, savingPath, uselayer0)  # calls the function from the core
+        # calls the function from the core:
+        beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_" + self.directory_settings(),
+                                                  savingPath=self.dir_button.get_current_folder(),
+                                                  uselayer0=self.use0.get_active_text(),
+                                                  layers_contain=self.layers_contain)
         print "Done."
 
     def callback_exit(self, widget, callback_data=None):
