@@ -181,7 +181,8 @@ class PyAPP():
         This method connects signals to relevant actions
         '''
         self.dir_button.set_current_folder(homeDir)
-        self.filename = self.entry.set_text('temp' + today_date)
+        # self.filename = self.entry.set_text('temp' + today_date)
+        self.filename = self.entry.set_text('{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4], today_date))
         self.button_exit.connect("clicked", self.callback_exit)
         self.bLineLength.connect('clicked', self.callback_lines_lengths)
         self.bBlocksCount.connect('clicked', self.callback_blocks_count)
