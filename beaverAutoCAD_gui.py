@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with beaverAutoCAD.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 import sys
 import pygtk
@@ -107,79 +107,83 @@ class PyAPP():
     def create_widgets(self):
         self.vbox = gtk.VBox(spacing=10)
 
-        self.hbox_0 = gtk.HBox(spacing=10)
+        self.hbox_logo = gtk.HBox(spacing=10)
         self.nadrashlogo = gtk.Image()
         self.nadrashlogo.set_from_file("Nadrash25mm90.png")
         self.nadrashlogo.set_tooltip_text(tooltiptext)
-        self.hbox_0.pack_start(self.nadrashlogo)
+        self.hbox_logo.pack_start(self.nadrashlogo)
 
-        self.hbox_1 = gtk.HBox(spacing=10)
+        self.hbox_file_settings = gtk.HBox(spacing=10)
         self.dir_button = gtk.FileChooserButton(title="Choose directory")
         self.dir_button.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
         self.dir_button.set_tooltip_text("This is where your file will be saved")
-        self.hbox_1.pack_start(self.dir_button)
+        self.hbox_file_settings.pack_start(self.dir_button)
         self.label = gtk.Label("File Name: ")
-        self.hbox_1.pack_start(self.label)
+        self.hbox_file_settings.pack_start(self.label)
         self.entry = gtk.Entry()
-        self.hbox_1.pack_start(self.entry)
+        self.hbox_file_settings.pack_start(self.entry)
 
-        self.hbox_2 = gtk.HBox(spacing=10)
+        self.hbox_options_label = gtk.HBox(spacing=10)
+        self.options_label = gtk.Label('OPTIONS')
+        self.hbox_options_label.pack_start(self.options_label)
+
+        self.hbox_options = gtk.HBox(spacing=10)
         self.use0Label = gtk.Label("Use layer 0 in calculation: ")
-        self.hbox_2.pack_start(self.use0Label)
+        self.hbox_options.pack_start(self.use0Label)
         self.use0 = gtk.combo_box_new_text()
         self.use0.append_text('yes')
         self.use0.append_text('no')
         self.use0.set_active(1)
         self.use0.set_tooltip_text(
             "In cases where you don't want to count blocks in layer 0, choose no. Otherwise, choose yes")
-        self.hbox_2.pack_start(self.use0)
+        self.hbox_options.pack_start(self.use0)
 
-        self.hbox_6 = gtk.HBox(spacing=10)
-        self.label = gtk.Label("Layers contain: ")
-        self.hbox_6.pack_start(self.label)
+        # self.hbox_options = gtk.HBox(spacing=10)
+        self.label = gtk.Label("Layers contain string: ")
+        self.hbox_options.pack_start(self.label)
         self.layers_contain_box = gtk.Entry()
-        self.hbox_6.pack_start(self.layers_contain_box)
+        self.hbox_options.pack_start(self.layers_contain_box)
 
         self.unitsLabel = gtk.Label("DWG units: ")
-        self.hbox_2.pack_start(self.unitsLabel)
+        self.hbox_options.pack_start(self.unitsLabel)
         self.units = gtk.combo_box_new_text()
         self.units.append_text('m')
         self.units.append_text('cm')
         self.units.append_text('mm')
         self.units.set_active(1)
         self.units.set_tooltip_text("Choose the units you used in the drawing")
-        self.hbox_2.pack_start(self.units)
+        self.hbox_options.pack_start(self.units)
 
-        self.hbox_3 = gtk.HBox(spacing=10)
+        self.hbox_functions_buttons = gtk.HBox(spacing=10)
         self.bLineLength = gtk.Button("Sum Lines Lengths in a DWG to MS-Excel")
-        self.hbox_3.pack_start(self.bLineLength)
+        self.hbox_functions_buttons.pack_start(self.bLineLength)
         self.bBlocksCount = gtk.Button("Count Blocks in a DWG to MS-Excel")
-        self.hbox_3.pack_start(self.bBlocksCount)
+        self.hbox_functions_buttons.pack_start(self.bBlocksCount)
         self.bBlocksCountPerLayer = gtk.Button("Count Blocks per layer in a DWG")
-        self.hbox_3.pack_start(self.bBlocksCountPerLayer)
+        self.hbox_functions_buttons.pack_start(self.bBlocksCountPerLayer)
 
-        self.hbox_4 = gtk.HBox(spacing=10)
+        self.hbox_progress_bar = gtk.HBox(spacing=10)
         self.pbar = gtk.ProgressBar()
-        self.hbox_4.pack_start(self.pbar)
+        self.hbox_progress_bar.pack_start(self.pbar)
         self.button_exit = gtk.Button("Exit")
-        self.hbox_4.pack_start(self.button_exit)
+        self.hbox_progress_bar.pack_start(self.button_exit)
         self.button_exit.set_tooltip_text("Press to exit...")
 
-        self.hbox_5 = gtk.HBox(spacing=10)
+        self.hbox_SE_logo = gtk.HBox(spacing=10)
         self.se_logo = gtk.Image()
         self.se_logo.set_from_file("SE_Logo25.png")
-        self.hbox_5.pack_start(self.se_logo)
+        self.hbox_SE_logo.pack_start(self.se_logo)
         self.se_logo.set_tooltip_text(tooltiptext)
         self.verLabel = gtk.Label("GUI Ver. " + __version__ + " // Core Ver. " + beaverAutoCAD_core.__version__)
-        self.hbox_5.pack_start(self.verLabel)
+        self.hbox_SE_logo.pack_start(self.verLabel)
 
-        self.vbox.pack_start(self.hbox_0)
-        self.vbox.pack_start(self.hbox_1)
-        self.vbox.pack_start(self.hbox_6)
-        self.vbox.pack_start(self.hbox_2)
-        self.vbox.pack_start(self.hbox_3)
-        self.vbox.pack_start(self.hbox_4)
-        self.vbox.pack_start(self.hbox_5)
+        self.vbox.pack_start(self.hbox_logo)
+        self.vbox.pack_start(self.hbox_file_settings)
+        self.vbox.pack_start(self.hbox_options_label)
+        self.vbox.pack_start(self.hbox_options)
+        self.vbox.pack_start(self.hbox_functions_buttons)
+        self.vbox.pack_start(self.hbox_progress_bar)
+        self.vbox.pack_start(self.hbox_SE_logo)
 
         self.window.add(self.vbox)
 
@@ -201,12 +205,16 @@ class PyAPP():
         '''
         This method connects the gui to the relevant function in the app's core
         '''
-        savingPath = self.dir_button.get_current_folder()
-        filename = "AAC_lines_" + self.directory_settings()
-        self.set_file_name(filename)
-        draw_units = self.units.get_active_text()
+        self.layers_contain = self.layers_contain_box.get_text()
+        if self.layers_contain != '':
+            print 'Sum line lengths in layers contain: {}'.format(self.layers_contain)
+        # self.set_file_name(filename)
         # calls the function from the core:
-        beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)
+        # beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)
+        beaverAutoCAD_core.line_lengths_excel(filename="AAC_lines_" + self.directory_settings(),
+                                              savingPath=self.dir_button.get_current_folder(),
+                                              draw_units = self.units.get_active_text(),
+                                              layers_contain=self.layers_contain)
         print "Done."
 
     def callback_blocks_count(self, widget, callback_data=None):
@@ -216,7 +224,8 @@ class PyAPP():
         # calls the function from the core:
         # beaverAutoCAD_core.count_blocks_excel(filename, savingPath, uselayer0, self.layers_contain)
         self.layers_contain = self.layers_contain_box.get_text()
-        print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
+        if self.layers_contain != '':
+            print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_" + self.directory_settings(),
                                               savingPath=self.dir_button.get_current_folder(),
                                               uselayer0=self.use0.get_active_text(),
@@ -228,10 +237,8 @@ class PyAPP():
         This method connects the gui to the relevant function in the app's core
         '''
         self.layers_contain = self.layers_contain_box.get_text()
-        print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
-        savingPath = self.dir_button.get_current_folder()
-        filename = "AAC_blocks_per_layer" + self.directory_settings()
-        uselayer0 = self.use0.get_active_text()
+        if self.layers_contain != '':
+            print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         # calls the function from the core:
         beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_" + self.directory_settings(),
                                                   savingPath=self.dir_button.get_current_folder(),
