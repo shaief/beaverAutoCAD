@@ -43,18 +43,12 @@ except IOError:
     print "File will be saved at: " + homeDir
 
 
-class PyAPP():
-    # def __init__(self):
+class PyAPP(object):
 
-    def directory_settings(self):
-        dir_name = self.dir_button.get_current_folder()
-        print dir_name
-        os.chdir(currentDirectory)
-        with open("settings.txt", "w") as text_file:
-            text_file.write(dir_name)
-        os.chdir(dir_name)
-        filename = self.entry.get_text()
-        return filename
+    def __init__(self):
+        self.dir_name = os.path.expanduser('~\Desktop')
+        self.filename = '{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4],
+                                                           today_date)
 
     def set_file_name(self, filename):
         # This method checks the existance of an XLS file, and allows the user to overwrite it,
@@ -67,25 +61,76 @@ class PyAPP():
             md.run()
             md.destroy()
 
-    def callback_lines_lengths(self, widget, callback_data=None):
+    def lines_lengths(self, ):
         # This method connects the gui to the relevant function in the app's core
-        savingPath = self.dir_button.get_current_folder()
+        savingPath = self.get_current_folder()
         filename = "AAC_lines_" + self.directory_settings()
         self.set_file_name(filename)
         draw_units = self.units.get_active_text()
         beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)  # calls the function from the core
         print "Done."
 
-    def callback_blocks_count(self, widget, callback_data=None):
+    def blocks_count(self, ):
         # This method connects the gui to the relevant function in the app's core
         savingPath = self.dir_button.get_current_folder()
         filename = "AAC_blocks_" + self.directory_settings()
         beaverAutoCAD_core.count_blocks_excel(filename, savingPath)  # calls the function from the core
         print "Done."
 
-    def callback_exit(self, widget, callback_data=None):
-        gtk.main_quit()
+    def user_interactions(self):
+        ascii_art = r"""
+ _                       _____     _       _____ _____ ____
+| |_ ___ ___ _ _ ___ ___|  _  |_ _| |_ ___|     |  _  |    \
+| . | -_| .'| | | -_|  _|     | | |  _| . |   --|     |  |  |
+|___|___|__,|\_/|___|_| |__|__|___|_| |___|_____|__|__|____/
+
+            """
+        print(ascii_art)
+        print 'Hello and welcome to beaverAutoCAD textual interface!'
+        print 'Files will be saved at: {}'.format(self.dir_name)
+        print '(1) Sum Lines Lengths in a DWG to MS-Excel'
+        print '(2) Count Blocks in a DWG to MS-Excel'
+        print '(3) Count Blocks per layer in a DWG'
+        user_chose = raw_input('Please choose what to do [1,2,3]: ')
+        if user_chose == '1':
+            user_string = raw_input('Enter a string to search in layer names: ')
+            user_units = raw_input('m / [cm] / mm')
+            if not user_units:
+                user_units = 'cm'
+            beaverAutoCAD_core.line_lengths_excel(filename='AAC_lines_{}'.format(self.filename),
+                                      savingPath=self.dir_name,
+                                      draw_units=user_units,
+                                      layers_contain=user_string)
+
+        elif user_chose == '2':
+            user_string = raw_input('Enter a string to search in layer names: ')
+            user_layer0 = raw_input('Use layer 0? y/[n]')
+            if not user_layer0 or user_layer0.lower()=='n':
+                user_layer0 = 'no'
+            else:
+                user_layer0 = 'yes'
+            beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_{}".format(self.filename),
+                                                  savingPath=self.dir_name,
+                                                  uselayer0=user_layer0,
+                                                  layers_contain=user_string)
+        elif user_chose == '3':
+            user_string = raw_input('Enter a string to search in layer names: ')
+            user_layer0 = raw_input('Use layer 0? y/[n]')
+            if not user_layer0 or user_layer0.lower()=='n':
+                user_layer0 = 'no'
+            else:
+                user_layer0 = 'yes'
+            beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_{}".format(self.filename),
+                                                  savingPath=self.dir_name,
+                                                  uselayer0=user_layer0,
+                                                  layers_contain=user_string)
+        else:
+            print 'No option was chosen. Goodbye!'
+        print "Done."
 
 
 if __name__ == "__main__":
+
+    print 'nothing to see here. go home!'
     app = PyAPP()
+    app.user_interactions()
