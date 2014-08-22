@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with beaverAutoCAD.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 import sys
 import time
@@ -40,7 +40,7 @@ today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour,
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
 
 
-def line_lengths_excel(filename, savingPath, draw_units):
+def line_lengths_excel(filename, savingPath, draw_units, layers_contain):
     '''
     This function iterates over all the layers in the opened DWG and write sum of line lengths of each layer
     into one MS-Excel sheet.
@@ -60,12 +60,14 @@ def line_lengths_excel(filename, savingPath, draw_units):
 
     for line in acad.iter_objects('polyline'):
         l1 = line.length
-        if line.Layer in layers:
-            i = layers.index(line.Layer)
-            total_length[i] += l1
-        else:
-            layers.append(line.Layer)
-            total_length.append(l1)
+        if layers_contain in line.Layer:
+            # print line.Layer
+            if line.Layer in layers:
+                i = layers.index(line.Layer)
+                total_length[i] += l1
+            else:
+                layers.append(line.Layer)
+                total_length.append(l1)
     print layers
     print total_length
     acad.prompt("Saving file AAC_lines_" + filename + ".xls at " + savingPath)
