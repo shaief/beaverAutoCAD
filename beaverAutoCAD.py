@@ -39,4 +39,5 @@ except ImportError:
     print "Using textual interface"
     import beaverAutoCAD_cli
 
-    beaverAutoCAD_cli.PyAPP()
+    runapp = beaverAutoCAD_cli.PyAPP()
+    runapp.user_interactions()
