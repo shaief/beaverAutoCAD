@@ -33,6 +33,25 @@ now = datetime.datetime.now()
 today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour, now.minute)
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
 
+ascii_art = r"""
+ _                       _____     _       _____ _____ ____
+| |_ ___ ___ _ _ ___ ___|  _  |_ _| |_ ___|     |  _  |    \
+| . | -_| .'| | | -_|  _|     | | |  _| . |   --|     |  |  |
+|___|___|__,|\_/|___|_| |__|__|___|_| |___|_____|__|__|____/
+
+-============  Automatic AutoCAD Calculations  ============-
+-===== Was made by Shai Efrati for NADRASH Ltd. (2013) ====-
+-=====     shaief@gmail.com // http://shaief.com      =====-
+-========= https://github.com/shaief/beaverAutoCAD ========-
+
+"""
+done = """
+ ____
+|    \ ___ ___ ___
+|  |  | . |   | -_|_
+|____/|___|_|_|___|_|
+
+"""
 try:
     with open('settings.txt') as settings_file:
         homeDir = settings_file.readline()
@@ -44,11 +63,10 @@ except IOError:
 
 
 class PyAPP(object):
-
     def __init__(self):
         self.dir_name = os.path.expanduser('~\Desktop')
         self.filename = '{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4],
-                                                           today_date)
+                                       today_date)
 
     def set_file_name(self, filename):
         # This method checks the existance of an XLS file, and allows the user to overwrite it,
@@ -78,13 +96,6 @@ class PyAPP(object):
         print "Done."
 
     def user_interactions(self):
-        ascii_art = r"""
- _                       _____     _       _____ _____ ____
-| |_ ___ ___ _ _ ___ ___|  _  |_ _| |_ ___|     |  _  |    \
-| . | -_| .'| | | -_|  _|     | | |  _| . |   --|     |  |  |
-|___|___|__,|\_/|___|_| |__|__|___|_| |___|_____|__|__|____/
-
-            """
         print(ascii_art)
         print 'Hello and welcome to beaverAutoCAD textual interface!'
         print 'Files will be saved at: {}'.format(self.dir_name)
@@ -94,18 +105,19 @@ class PyAPP(object):
         user_chose = raw_input('Please choose what to do [1,2,3]: ')
         if user_chose == '1':
             user_string = raw_input('Enter a string to search in layer names: ')
-            user_units = raw_input('m / [cm] / mm')
+            user_units = raw_input('Drawing units (m / [cm] / mm):')
             if not user_units:
                 user_units = 'cm'
             beaverAutoCAD_core.line_lengths_excel(filename='AAC_lines_{}'.format(self.filename),
-                                      savingPath=self.dir_name,
-                                      draw_units=user_units,
-                                      layers_contain=user_string)
+                                                  savingPath=self.dir_name,
+                                                  draw_units=user_units,
+                                                  layers_contain=user_string)
+            print 'Done.'
 
         elif user_chose == '2':
             user_string = raw_input('Enter a string to search in layer names: ')
             user_layer0 = raw_input('Use layer 0? y/[n]')
-            if not user_layer0 or user_layer0.lower()=='n':
+            if not user_layer0 or user_layer0.lower() == 'n':
                 user_layer0 = 'no'
             else:
                 user_layer0 = 'yes'
@@ -113,24 +125,32 @@ class PyAPP(object):
                                                   savingPath=self.dir_name,
                                                   uselayer0=user_layer0,
                                                   layers_contain=user_string)
+            print 'Done.'
         elif user_chose == '3':
             user_string = raw_input('Enter a string to search in layer names: ')
             user_layer0 = raw_input('Use layer 0? y/[n]')
-            if not user_layer0 or user_layer0.lower()=='n':
+            if not user_layer0 or user_layer0.lower() == 'n':
                 user_layer0 = 'no'
             else:
                 user_layer0 = 'yes'
             beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_{}".format(self.filename),
-                                                  savingPath=self.dir_name,
-                                                  uselayer0=user_layer0,
-                                                  layers_contain=user_string)
+                                                      savingPath=self.dir_name,
+                                                      uselayer0=user_layer0,
+                                                      layers_contain=user_string)
+            print 'Done.'
         else:
             print 'No option was chosen. Goodbye!'
-        print "Done."
+        print """
+                               __
+ _____           _ _          |  |
+|   __|___ ___ _| | |_ _ _ ___|  |
+|  |  | . | . | . | . | | | -_|__|
+|_____|___|___|___|___|_  |___|__|
+                      |___|
+"""
 
 
 if __name__ == "__main__":
-
     print 'nothing to see here. go home!'
     app = PyAPP()
     app.user_interactions()
