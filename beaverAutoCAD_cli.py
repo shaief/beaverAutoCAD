@@ -27,8 +27,6 @@ import os.path
 import datetime
 import beaverAutoCAD_core
 
-currentDirectory = os.getcwd()
-print currentDirectory
 now = datetime.datetime.now()
 today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour, now.minute)
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
@@ -151,6 +149,5 @@ class PyAPP(object):
 
 
 if __name__ == "__main__":
-    print 'nothing to see here. go home!'
     app = PyAPP()
     app.user_interactions()
