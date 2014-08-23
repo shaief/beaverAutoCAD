@@ -34,11 +34,27 @@ from pyautocad.contrib.tables import Table
 acad = Autocad()  # AutoCAD should be running with the analyzed drawing
 
 currentDirectory = os.getcwd()
-print currentDirectory
+print 'Running from: {}'.format(currentDirectory)
 now = datetime.datetime.now()
 today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour, now.minute)
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
 
+
+ascii_art = r"""
+ _                       _____     _       _____ _____ ____
+| |_ ___ ___ _ _ ___ ___|  _  |_ _| |_ ___|     |  _  |    \
+| . | -_| .'| | | -_|  _|     | | |  _| . |   --|     |  |  |
+|___|___|__,|\_/|___|_| |__|__|___|_| |___|_____|__|__|____/
+
+-============  Automatic AutoCAD Calculations  ============-
+-===== Was made by Shai Efrati for NADRASH Ltd. (2013) ====-
+-=====     shaief@gmail.com // http://shaief.com      =====-
+-========= https://github.com/shaief/beaverAutoCAD ========-
+
+"""
+
+def prompt_ascii_art():
+    acad.prompt(ascii_art)
 
 def line_lengths_excel(filename, savingPath, draw_units, layers_contain):
     '''
