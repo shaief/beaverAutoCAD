@@ -29,28 +29,16 @@ import pygtk
 if not sys.platform == 'win32':
     pygtk.require('2.0')
 
-import gtk, gobject, time
-
-if not sys.platform == 'win32':
-    pygtk.require('2.0')
-
-import gtk, gobject, time
+import gtk
 import os.path
 import datetime
 import beaverAutoCAD_core
 
 if gtk.pygtk_version < (2, 4, 0):
-    print "Please install an updated version of pygtk.\nCurrently using pygtk version " + str(
-        gtk.pygtk_version[0]) + "." + str(gtk.pygtk_version[1]) + "." + str(gtk.pygtk_version[2])
-    raise SystemExit
-
-if gtk.pygtk_version < (2, 4, 0):
-    print "Please install an updated version of pygtk.\nCurrently using pygtk version " + str(
-        gtk.pygtk_version[0]) + "." + str(gtk.pygtk_version[1]) + "." + str(gtk.pygtk_version[2])
+    print "Please install an updated version of pygtk.\nCurrently using pygtk version {}".format(gtk.pygtk_version)
     raise SystemExit
 
 currentDirectory = os.getcwd()
-print currentDirectory
 now = datetime.datetime.now()
 today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour, now.minute)
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
@@ -69,6 +57,7 @@ except IOError:
 
 class PyAPP():
     def __init__(self):
+        beaverAutoCAD_core.prompt_ascii_art()
         self.window = gtk.Window()
         self.window.set_title("beaverAutoCAD - Automating AutoCAD Calculations")
         self.window.set_position(gtk.WIN_POS_CENTER)
@@ -88,9 +77,8 @@ class PyAPP():
         os.chdir(currentDirectory)
         with open("settings.txt", "w") as text_file:
             text_file.write(dir_name)
-        os.chdir(dir_name)
         filename = self.entry.get_text()
-        return filename
+        return dir_name
 
     def set_file_name(self, filename):
         '''
@@ -138,7 +126,6 @@ class PyAPP():
             "In cases where you don't want to count blocks in layer 0, choose no. Otherwise, choose yes")
         self.hbox_options.pack_start(self.use0)
 
-        # self.hbox_options = gtk.HBox(spacing=10)
         self.label = gtk.Label("Layers contain string: ")
         self.hbox_options.pack_start(self.label)
         self.layers_contain_box = gtk.Entry()
@@ -211,9 +198,9 @@ class PyAPP():
         # self.set_file_name(filename)
         # calls the function from the core:
         # beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)
-        beaverAutoCAD_core.line_lengths_excel(filename="AAC_lines_" + self.directory_settings(),
-                                              savingPath=self.dir_button.get_current_folder(),
-                                              draw_units = self.units.get_active_text(),
+        beaverAutoCAD_core.line_lengths_excel(filename="AAC_lines_{}".format(self.entry.get_text()),
+                                              savingPath=self.directory_settings(),
+                                              draw_units=self.units.get_active_text(),
                                               layers_contain=self.layers_contain)
         print "Done."
 
@@ -226,8 +213,8 @@ class PyAPP():
         self.layers_contain = self.layers_contain_box.get_text()
         if self.layers_contain != '':
             print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
-        beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_" + self.directory_settings(),
-                                              savingPath=self.dir_button.get_current_folder(),
+        beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_{}".format(self.entry.get_text()),
+                                              savingPath=self.directory_settings(),
                                               uselayer0=self.use0.get_active_text(),
                                               layers_contain=self.layers_contain)
         print "Done."
@@ -240,8 +227,8 @@ class PyAPP():
         if self.layers_contain != '':
             print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         # calls the function from the core:
-        beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_" + self.directory_settings(),
-                                                  savingPath=self.dir_button.get_current_folder(),
+        beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_{}".format(self.entry.get_text()),
+                                                  savingPath=self.directory_settings(),
                                                   uselayer0=self.use0.get_active_text(),
                                                   layers_contain=self.layers_contain)
         print "Done."
