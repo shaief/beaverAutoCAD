@@ -65,6 +65,8 @@ class PyAPP(object):
         self.dir_name = os.path.expanduser('~\Desktop')
         self.filename = '{}_{}'.format(beaverAutoCAD_core.acad.ActiveDocument.Name[0:-4],
                                        today_date)
+        beaverAutoCAD_core.prompt_ascii_art()
+
 
     def set_file_name(self, filename):
         # This method checks the existance of an XLS file, and allows the user to overwrite it,
@@ -94,7 +96,6 @@ class PyAPP(object):
         print "Done."
 
     def user_interactions(self):
-        print(ascii_art)
         print 'Hello and welcome to beaverAutoCAD textual interface!'
         print 'Files will be saved at: {}'.format(self.dir_name)
         print '(1) Sum Lines Lengths in a DWG to MS-Excel'
