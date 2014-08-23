@@ -31,25 +31,6 @@ now = datetime.datetime.now()
 today_date = "%04d%02d%02d_%02d-%02d" % (now.year, now.month, now.day, now.hour, now.minute)
 today_date_designed = "%02d/%02d/%04d %02d:%02d" % (now.day, now.month, now.year, now.hour, now.minute)
 
-ascii_art = r"""
- _                       _____     _       _____ _____ ____
-| |_ ___ ___ _ _ ___ ___|  _  |_ _| |_ ___|     |  _  |    \
-| . | -_| .'| | | -_|  _|     | | |  _| . |   --|     |  |  |
-|___|___|__,|\_/|___|_| |__|__|___|_| |___|_____|__|__|____/
-
--============  Automatic AutoCAD Calculations  ============-
--===== Was made by Shai Efrati for NADRASH Ltd. (2013) ====-
--=====     shaief@gmail.com // http://shaief.com      =====-
--========= https://github.com/shaief/beaverAutoCAD ========-
-
-"""
-done = """
- ____
-|    \ ___ ___ ___
-|  |  | . |   | -_|_
-|____/|___|_|_|___|_|
-
-"""
 try:
     with open('settings.txt') as settings_file:
         homeDir = settings_file.readline()
@@ -67,17 +48,17 @@ class PyAPP(object):
                                        today_date)
         beaverAutoCAD_core.prompt_ascii_art()
 
-
-    def set_file_name(self, filename):
-        # This method checks the existance of an XLS file, and allows the user to overwrite it,
-        # or use a different file.
-        tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
-        print tableFilename
-        if os.path.isfile(tableFilename):
-            md = gtk.MessageDialog(self, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_CLOSE, "File " + filename + ".xls exist. Do you want to continue?")
-            md.run()
-            md.destroy()
+    #
+    # def set_file_name(self, filename):
+    #     # This method checks the existence of an XLS file, and allows the user to overwrite it,
+    #     # or use a different file.
+    #     tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
+    #     print tableFilename
+    #     if os.path.isfile(tableFilename):
+    #         md = gtk.MessageDialog(self, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_QUESTION,
+    #                                gtk.BUTTONS_CLOSE, "File " + filename + ".xls exist. Do you want to continue?")
+    #         md.run()
+    #         md.destroy()
 
     def lines_lengths(self, ):
         # This method connects the gui to the relevant function in the app's core
