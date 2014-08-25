@@ -97,7 +97,7 @@ def line_lengths_excel(filename, savingPath, draw_units, layers_contain):
     table.save(tableFilename, 'xls')
 
 
-def count_blocks_excel(filename, savingPath, uselayer0, layers_contain):
+def count_blocks_excel(filename, savingPath, uselayer0, layers_contain, blocks_contain):
     '''
     This function iterates over all the layers in the opened DWG and summing up all the blocks in the file
     into one MS-Excel sheet.
@@ -123,12 +123,13 @@ def count_blocks_excel(filename, savingPath, uselayer0, layers_contain):
             continue
         if layers_contain in block.Layer:
             # print block.Layer
-            if block.name in block_list:
-                i = block_list.index(block.name)
-                total_blocks[i] += 1
-            else:
-                block_list.append(block.name)
-                total_blocks.append(1)
+            if blocks_contain in block.name:
+                if block.name in block_list:
+                    i = block_list.index(block.name)
+                    total_blocks[i] += 1
+                else:
+                    block_list.append(block.name)
+                    total_blocks.append(1)
 
     print block_list
     print total_blocks
@@ -145,7 +146,7 @@ def count_blocks_excel(filename, savingPath, uselayer0, layers_contain):
     table.save(tableFilename, 'xls')
 
 
-def count_blocks_per_layer(filename, savingPath, uselayer0, layers_contain):
+def count_blocks_per_layer(filename, savingPath, uselayer0, layers_contain, blocks_contain):
     '''
     This function iterates over all the layers in the opened DWG and summing up all the blocks in each layer
     into one MS-Excel sheet.
@@ -173,14 +174,15 @@ def count_blocks_per_layer(filename, savingPath, uselayer0, layers_contain):
             continue
         if layers_contain in block.Layer:
             # print block.Layer
-            if block.Layer + " " + block.name in block_list:
-                i = block_list.index(block.Layer + " " + block.name)
-                total_blocks[i] += 1
-            else:
-                block_list.append(block.Layer + " " + block.name)
-                block_name_list.append(block.name)
-                block_layer.append(block.Layer)
-                total_blocks.append(1)
+            if blocks_contain in block.name:
+                if block.Layer + " " + block.name in block_list:
+                    i = block_list.index(block.Layer + " " + block.name)
+                    total_blocks[i] += 1
+                else:
+                    block_list.append(block.Layer + " " + block.name)
+                    block_name_list.append(block.name)
+                    block_layer.append(block.Layer)
+                    total_blocks.append(1)
 
     print block_list
     print total_blocks
