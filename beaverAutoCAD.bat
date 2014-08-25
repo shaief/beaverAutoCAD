@@ -1,0 +1,1 @@
+python %userprofile%\beaverAutoCAD\beaverAutoCAD.py
