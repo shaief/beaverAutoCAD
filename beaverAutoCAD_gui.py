@@ -115,45 +115,60 @@ class PyAPP():
         self.options_label = gtk.Label('OPTIONS')
         self.hbox_options_label.pack_start(self.options_label)
 
-        self.hbox_options1 = gtk.HBox(spacing=10)
+        self.hbox_options_buttons = gtk.HBox(spacing=5)
+        self.vbox_options1 = gtk.VBox(spacing=10)
         self.use0Label = gtk.Label("Use layer 0 in calculation: ")
-        self.hbox_options1.pack_start(self.use0Label)
+        self.vbox_options1.pack_start(self.use0Label)
         self.use0 = gtk.combo_box_new_text()
         self.use0.append_text('yes')
         self.use0.append_text('no')
         self.use0.set_active(1)
         self.use0.set_tooltip_text(
             "In cases where you don't want to count blocks in layer 0, choose no. Otherwise, choose yes")
-        self.hbox_options1.pack_start(self.use0)
+        self.vbox_options1.pack_start(self.use0)
 
         self.unitsLabel = gtk.Label("DWG units: ")
-        self.hbox_options1.pack_start(self.unitsLabel)
+        self.vbox_options1.pack_start(self.unitsLabel)
         self.units = gtk.combo_box_new_text()
         self.units.append_text('m')
         self.units.append_text('cm')
         self.units.append_text('mm')
         self.units.set_active(1)
         self.units.set_tooltip_text("Choose the units you used in the drawing")
-        self.hbox_options1.pack_start(self.units)
+        self.vbox_options1.pack_start(self.units)
 
-        self.hbox_options2 = gtk.HBox(spacing=10)
-        self.hbox_options2.set_tooltip_text("Case sensitive!")
+        self.vbox_options2 = gtk.VBox(spacing=5)
+        self.vbox_options2.set_tooltip_text("Case sensitive!")
         self.label = gtk.Label("Layers contain string: ")
-        self.hbox_options2.pack_start(self.label)
+        self.vbox_options2.pack_start(self.label)
         self.layers_contain_box = gtk.Entry()
-        self.hbox_options2.pack_start(self.layers_contain_box)
+        self.vbox_options2.pack_start(self.layers_contain_box)
         self.label = gtk.Label("Blocks contain string: ")
-        self.hbox_options2.pack_start(self.label)
+        self.vbox_options2.pack_start(self.label)
         self.blocks_contain_box = gtk.Entry()
-        self.hbox_options2.pack_start(self.blocks_contain_box)
+        self.vbox_options2.pack_start(self.blocks_contain_box)
+
+        self.hbox_options_label.pack_start(self.vbox_options1)
+        self.hbox_options_label.pack_start(self.vbox_options2)
+
+
+        self.hbox_functions_label = gtk.HBox(spacing=10)
+        self.functions_label = gtk.Label('FUNCTIONS')
+        self.hbox_functions_label.pack_start(self.functions_label)
 
         self.hbox_functions_buttons = gtk.HBox(spacing=10)
+        self.vbox_functions_buttons1 = gtk.VBox(spacing=10)
         self.bLineLength = gtk.Button("Sum Lines Lengths in a DWG to MS-Excel")
-        self.hbox_functions_buttons.pack_start(self.bLineLength)
+        self.vbox_functions_buttons1.pack_start(self.bLineLength)
+        self.bAreaSum = gtk.Button("Sum Areas in a DWG to MS-Excel")
+        self.vbox_functions_buttons1.pack_start(self.bAreaSum)
+        self.vbox_functions_buttons2 = gtk.VBox(spacing=10)
         self.bBlocksCount = gtk.Button("Count Blocks in a DWG to MS-Excel")
-        self.hbox_functions_buttons.pack_start(self.bBlocksCount)
+        self.vbox_functions_buttons2.pack_start(self.bBlocksCount)
         self.bBlocksCountPerLayer = gtk.Button("Count Blocks per layer in a DWG")
-        self.hbox_functions_buttons.pack_start(self.bBlocksCountPerLayer)
+        self.vbox_functions_buttons2.pack_start(self.bBlocksCountPerLayer)
+        self.hbox_functions_label.pack_start(self.vbox_functions_buttons1)
+        self.hbox_functions_label.pack_start(self.vbox_functions_buttons2)
 
         self.hbox_progress_bar = gtk.HBox(spacing=10)
         self.pbar = gtk.ProgressBar()
@@ -173,8 +188,8 @@ class PyAPP():
         self.vbox.pack_start(self.hbox_logo)
         self.vbox.pack_start(self.hbox_file_settings)
         self.vbox.pack_start(self.hbox_options_label)
-        self.vbox.pack_start(self.hbox_options1)
-        self.vbox.pack_start(self.hbox_options2)
+        self.vbox.pack_start(self.hbox_options_buttons)
+        self.vbox.pack_start(self.hbox_functions_label)
         self.vbox.pack_start(self.hbox_functions_buttons)
         self.vbox.pack_start(self.hbox_progress_bar)
         self.vbox.pack_start(self.hbox_SE_logo)
@@ -191,6 +206,7 @@ class PyAPP():
                                                            today_date))
         self.button_exit.connect("clicked", self.callback_exit)
         self.bLineLength.connect('clicked', self.callback_lines_lengths)
+        self.bAreaSum.connect('clicked', self.callback_areas_sum)
         self.bBlocksCount.connect('clicked', self.callback_blocks_count)
         self.bBlocksCountPerLayer.connect('clicked', self.callback_blocks_count_per_layer)
         self.window.connect("destroy", gtk.main_quit)
@@ -211,6 +227,24 @@ class PyAPP():
                                               layers_contain=self.layers_contain)
         print "Done."
 
+
+    def callback_areas_sum(self, widget, callback_data=None):
+        '''
+        This method connects the gui to the relevant function in the app's core
+        '''
+        self.layers_contain = self.layers_contain_box.get_text()
+        if self.layers_contain != '':
+            print 'Sum areas in layers contain: {}'.format(self.layers_contain)
+        # self.set_file_name(filename)
+        # calls the function from the core:
+        # beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)
+        beaverAutoCAD_core.sum_areas_excel(filename="AAC_areas_{}".format(self.entry.get_text()),
+                                           savingPath=self.directory_settings(),
+                                           draw_units=self.units.get_active_text(),
+                                           layers_contain=self.layers_contain)
+        print "Done."
+
+
     def callback_blocks_count(self, widget, callback_data=None):
         '''
         This method connects the gui to the relevant function in the app's core
@@ -218,7 +252,7 @@ class PyAPP():
         # calls the function from the core:
         # beaverAutoCAD_core.count_blocks_excel(filename, savingPath, uselayer0, self.layers_contain)
         self.layers_contain = self.layers_contain_box.get_text()
-        self.blocks_contain=self.blocks_contain_box.get_text()
+        self.blocks_contain = self.blocks_contain_box.get_text()
         if self.layers_contain != '':
             print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_{}".format(self.entry.get_text()),
@@ -228,12 +262,13 @@ class PyAPP():
                                               blocks_contain=self.blocks_contain)
         print "Done."
 
+
     def callback_blocks_count_per_layer(self, widget, callback_data=None):
         '''
         This method connects the gui to the relevant function in the app's core
         '''
         self.layers_contain = self.layers_contain_box.get_text()
-        self.blocks_contain=self.blocks_contain_box.get_text()
+        self.blocks_contain = self.blocks_contain_box.get_text()
         if self.layers_contain != '':
             print 'Counts blocks in layers contain: {}'.format(self.layers_contain)
         # calls the function from the core:
@@ -243,6 +278,7 @@ class PyAPP():
                                                   layers_contain=self.layers_contain,
                                                   blocks_contain=self.blocks_contain)
         print "Done."
+
 
     def callback_exit(self, widget, callback_data=None):
         gtk.main_quit()

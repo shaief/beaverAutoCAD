@@ -96,6 +96,46 @@ def line_lengths_excel(filename, savingPath, draw_units, layers_contain):
     # Save table in xls
     table.save(tableFilename, 'xls')
 
+def sum_areas_excel(filename, savingPath, draw_units, layers_contain):
+    '''
+    This function iterates over all the layers in the opened DWG and write sum of areas in each layer
+    into one MS-Excel sheet.
+    Parameters needed:
+    1. Name of an MS-Excel file (doesn't have to exist)
+    2. Units of the drwaing
+    '''
+    os.chdir(savingPath)
+    acad.prompt("Creating a table of areas sum per layer")
+    tableFilename = filename + '.xls'
+    table = Table()
+    layers = []
+    total_sum = []
+    units_scale = {"m": 1, "cm": 100, "mm": 1000}
+    units = draw_units
+    scale = units_scale[units]
+
+    for object in acad.iter_objects():
+        obj1 = object.area
+        if layers_contain in object.Layer:
+            # print line.Layer
+            if object.Layer in layers:
+                i = layers.index(object.Layer)
+                total_sum[i] += obj1
+            else:
+                layers.append(object.Layer)
+                total_sum.append(obj1)
+    print layers
+    print total_sum
+    acad.prompt("Saving file AAC_areas_" + filename + ".xls at " + savingPath)
+    # Add headlines to table
+    table.writerow(["NADRASH LTD.", "Area sum", "Created:", today_date_designed, acad.ActiveDocument.Name])
+    table.writerow(["Layer", "[" + units + "^2]", "[m^2]", "", ""])
+    # Add data to table
+    for i in range(len(layers)):
+        table.writerow([layers[i], total_sum[i], total_sum[i] / scale**2, "", ""])
+    # Save table in xls
+    table.save(tableFilename, 'xls')
+
 
 def count_blocks_excel(filename, savingPath, uselayer0, layers_contain, blocks_contain):
     '''

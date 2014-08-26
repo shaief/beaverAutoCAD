@@ -50,7 +50,7 @@ class PyAPP(object):
 
     #
     # def set_file_name(self, filename):
-    #     # This method checks the existence of an XLS file, and allows the user to overwrite it,
+    # # This method checks the existence of an XLS file, and allows the user to overwrite it,
     #     # or use a different file.
     #     tableFilename = self.dir_button.get_current_folder() + '\\' + filename + ".xls"
     #     print tableFilename
@@ -69,6 +69,15 @@ class PyAPP(object):
         beaverAutoCAD_core.line_lengths_excel(filename, savingPath, draw_units)  # calls the function from the core
         print "Done."
 
+    def areas_sum(self, ):
+        # This method connects the gui to the relevant function in the app's core
+        savingPath = self.get_current_folder()
+        filename = "AAC_areas_" + self.directory_settings()
+        self.set_file_name(filename)
+        draw_units = self.units.get_active_text()
+        beaverAutoCAD_core.sum_areas_excel(filename, savingPath, draw_units)  # calls the function from the core
+        print "Done."
+
     def blocks_count(self, ):
         # This method connects the gui to the relevant function in the app's core
         savingPath = self.dir_button.get_current_folder()
@@ -80,9 +89,10 @@ class PyAPP(object):
         print 'Hello and welcome to beaverAutoCAD textual interface!'
         print 'Files will be saved at: {}'.format(self.dir_name)
         print '(1) Sum Lines Lengths in a DWG to MS-Excel'
-        print '(2) Count Blocks in a DWG to MS-Excel'
-        print '(3) Count Blocks per layer in a DWG'
-        user_chose = raw_input('Please choose what to do [1,2,3]: ')
+        print '(2) Sum Areas in a DWG to MS-Excel'
+        print '(3) Count Blocks in a DWG to MS-Excel'
+        print '(4) Count Blocks per layer in a DWG'
+        user_chose = raw_input('Please choose what to do [1,2,3,4]: ')
         if user_chose == '1':
             user_string = raw_input('Enter a string to search in layer names: ')
             user_units = raw_input('Drawing units (m / [cm] / mm):')
@@ -93,9 +103,20 @@ class PyAPP(object):
                                                   draw_units=user_units,
                                                   layers_contain=user_string)
             print 'Done.'
-
         elif user_chose == '2':
-            user_string = raw_input('Enter a string to search in layer names: ')
+                    user_string = raw_input('Enter a string to search in layer names: ')
+                    user_units = raw_input('Drawing units (m / [cm] / mm):')
+                    if not user_units:
+                        user_units = 'cm'
+                    beaverAutoCAD_core.sum_areas_excel(filename='AAC_areas_{}'.format(self.filename),
+                                                          savingPath=self.dir_name,
+                                                          draw_units=user_units,
+                                                          layers_contain=user_string)
+                    print 'Done.'
+
+        elif user_chose == '3':
+            user_string_layers = raw_input('Enter a string to search in layer names: ')
+            user_string_blocks = raw_input('Enter a string to search in block names: ')
             user_layer0 = raw_input('Use layer 0? y/[n]')
             if not user_layer0 or user_layer0.lower() == 'n':
                 user_layer0 = 'no'
@@ -104,10 +125,12 @@ class PyAPP(object):
             beaverAutoCAD_core.count_blocks_excel(filename="AAC_blocks_{}".format(self.filename),
                                                   savingPath=self.dir_name,
                                                   uselayer0=user_layer0,
-                                                  layers_contain=user_string)
+                                                  layers_contain=user_string_layers,
+                                                  blocks_contain=user_string_blocks)
             print 'Done.'
-        elif user_chose == '3':
-            user_string = raw_input('Enter a string to search in layer names: ')
+        elif user_chose == '4':
+            user_string_layers = raw_input('Enter a string to search in layer names: ')
+            user_string_blocks = raw_input('Enter a string to search in block names: ')
             user_layer0 = raw_input('Use layer 0? y/[n]')
             if not user_layer0 or user_layer0.lower() == 'n':
                 user_layer0 = 'no'
@@ -116,7 +139,8 @@ class PyAPP(object):
             beaverAutoCAD_core.count_blocks_per_layer(filename="AAC_blocks_per_layer_{}".format(self.filename),
                                                       savingPath=self.dir_name,
                                                       uselayer0=user_layer0,
-                                                      layers_contain=user_string)
+                                                      layers_contain=user_string_layers,
+                                                      blocks_contain=user_string_blocks)
             print 'Done.'
         else:
             print 'No option was chosen. Goodbye!'
