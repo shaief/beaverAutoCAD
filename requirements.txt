@@ -4,5 +4,5 @@ pycairo==1.8.10
 pygobject==2.28.3
 pygtk==2.24.0
 pywin32==218
-tablib==0.9.11
+tablib==0.14.0
 xlrd==0.9.2
